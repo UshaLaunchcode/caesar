@@ -15,11 +15,27 @@
 # limitations under the License.
 #
 import webapp2
-
+from caesar import encrypt
 class MainHandler(webapp2.RequestHandler):
     def get(self):
-        self.response.write('Hello world!')
+        user_input="""
+        <form action="/encrypt">
+        <input type="text" name="message"/>
+        <input type="text" name="rotation"/>
+        <button type name="lettershift">submit</button>
+        """
+        self.response.write(user_input)
+
+class classencrypt(webapp2.RequestHandler):
+            def get(self):
+                message = self.request.get("message")
+                rotation = self.request.get("rotation")
+
+                crypt = encrypt(message, int(rotation))
+                self.response.write(crypt)
+
 
 app = webapp2.WSGIApplication([
-    ('/', MainHandler)
+    ('/', MainHandler),
+    ('/encrypt', classencrypt)
 ], debug=True)
